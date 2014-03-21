@@ -1,0 +1,15 @@
+{
+    "architecture": "all",
+    "description": "description of u2ch",
+    "framework": "ubuntu-sdk-13.10",
+    "hooks": {
+        "u2ch": {
+            "apparmor": "u2ch.json",
+            "desktop": "u2ch.desktop"
+        }
+    },
+    "maintainer": "",
+    "name": "com.ubuntu.developer.username.u2ch",
+    "title": "u2ch",
+    "version": "0.1"
+}

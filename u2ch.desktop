@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=u2ch
+Exec=/usr/bin/qmlscene $@ /usr/share/u2ch/u2ch.qml
+Icon=qmlscene
+Terminal=false
+Type=Application
+X-Ubuntu-Touch=true
