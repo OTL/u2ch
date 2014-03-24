@@ -1,4 +1,5 @@
 import QtQuick 2.0
+import Ubuntu.Components.ListItems 0.1  as ListItem
 
 Rectangle {
     width: parent.width
@@ -8,12 +9,16 @@ Rectangle {
     }
 
     Component {
-	id: contactDelegate
-	Item {
-            width: parent.width; height: 40
+	id: threadDelegate
+	ListItem.Standard {
+            width: parent.width
+	    height: units.gu(5)
+	    progression: true
             Column {
-		Text { text: '<b>Name:</b> ' + name }
-		Text { text: '<b>dat:</b> ' + dat }
+		Text { text: name
+		       font.family: webFont.name
+		       font.pointSize: units.gu(3)
+		     }
             }
             MouseArea {
 		anchors.fill: parent
@@ -29,16 +34,14 @@ Rectangle {
     ListView {
 	anchors.fill: parent
 	model: threadModel
-	delegate: contactDelegate
-	//highlight: Rectangle { color: "lightsteelblue"; radius: 5 }
-	//focus: true
+	delegate: threadDelegate
     }
 
     function getListByURL(url) {
 	var doc = new XMLHttpRequest();
 	doc.onreadystatechange = function() {
-            threadModel.clear()
             if (doc.readyState == XMLHttpRequest.DONE) {
+		threadModel.clear()
 		doc.responseText.split("\n").forEach(
 		    function(line) {
 			if (line.match(/(.+)<>(.+)/)) {
@@ -47,11 +50,13 @@ Rectangle {
 						name: RegExp.$2})
 			}
 		    });
-            }
+	    }
 	}
-	doc.open("get", url + '/subject.txt');
+	var server_url = 'http://smilerobotics.com:25252/utf/'
+	doc.open("get", server_url + url + '/subject.txt')
+	console.log(server_url + url + '/subject.txt')
 	doc.setRequestHeader("Content-Encoding", "UTF-8");
-	doc.send();
+	doc.send()
     }
 
 }

@@ -11,7 +11,7 @@ MainView {
     objectName: "mainView"
 
     // Note! applicationName needs to match the "name" field of the click manifest
-    applicationName: "com.ubuntu.developer..u2ch"
+    applicationName: "com.ubuntu.developer.otl.u2ch"
 
     /*
      This property enables the application to change orientation
@@ -21,6 +21,10 @@ MainView {
 
     width: units.gu(100)
     height: units.gu(75)
+
+    FontLoader { id: webFont
+		 source: "https://dl.dropboxusercontent.com/u/1658499/FLOPDesignFont.ttf" 
+	       }
 
     PageStack {
         id: rootStack

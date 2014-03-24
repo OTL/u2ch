@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import Ubuntu.Components 0.1
+import Ubuntu.Components.ListItems 0.1  as ListItem
 
 Rectangle {
     width: parent.width
@@ -8,12 +9,16 @@ Rectangle {
         id: contactModel
     }
     Component {
-        id: contactDelegate
-        Item {
-            width: 180; height: 40
+        id: boardDelegate
+        ListItem.Standard {
+            width: parent.width; height: units.gu(5)
+	    progression: true
+
             Column {
-                Text { text: '<b>Name:</b> ' + name }
-                Text { text: '<b>server:</b> ' + url }
+                Text { text: name
+		       font.family: webFont.name
+		       font.pointSize: units.gu(3)
+		     }
             }
             MouseArea {
                 anchors.fill: parent
@@ -29,27 +34,26 @@ Rectangle {
     ListView {
         anchors.fill: parent
         model: contactModel
-        delegate: contactDelegate
-//        highlight: Rectangle { color: "lightsteelblue"; radius: 5 }
-//        focus: true
+        delegate: boardDelegate
     }
 
     function getListByURL(url) {
-        var doc = new XMLHttpRequest();
-        doc.onreadystatechange = function() {
+        var req = new XMLHttpRequest();
+        req.onreadystatechange = function() {
             contactModel.clear()
-            if (doc.readyState == XMLHttpRequest.DONE) {
-                doc.responseText.split("\n").forEach(
+            if (req.readyState == XMLHttpRequest.DONE) {
+		req.responseText.split("\n").forEach(
 		    function(line) {
-            if (line.match(/(http:\/\/.+\.2ch\.net\/.+)\/>(.+)</)) {
-                contactModel.append({url: RegExp.$1,
-                         name: RegExp.$2})
+			if (line.match(/(http:\/\/.+\.2ch\.net\/.+)\/>(.+)<\//)) {
+			    contactModel.append({url: RegExp.$1,
+						 name: RegExp.$2})
 			}
 		    });
             }
         }
-        doc.open("get", url);
-        doc.setRequestHeader("Content-Encoding", "UTF-8");
-        doc.send();
+
+	req.open("get", url);
+	req.setRequestHeader("Content-Encoding", "UTF-8");
+	req.send();
     }
 }
