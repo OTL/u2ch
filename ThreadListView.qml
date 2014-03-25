@@ -12,12 +12,12 @@ Rectangle {
 	id: threadDelegate
 	ListItem.Standard {
             width: parent.width
-	    height: units.gu(5)
+	    height: units.gu(3)
 	    progression: true
             Column {
 		Text { text: name
 		       font.family: webFont.name
-		       font.pointSize: units.gu(3)
+		       font.pixelSize: FontUtils.sizeToPixels('medium')
 		     }
             }
             MouseArea {

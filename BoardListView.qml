@@ -11,13 +11,13 @@ Rectangle {
     Component {
         id: boardDelegate
         ListItem.Standard {
-            width: parent.width; height: units.gu(5)
+            width: parent.width; height: units.gu(3)
 	    progression: true
 
             Column {
-                Text { text: name
+                Text { text: ' ' + name
 		       font.family: webFont.name
-		       font.pointSize: units.gu(3)
+		       font.pixelSize: FontUtils.sizeToPixels('medium')
 		     }
             }
             MouseArea {
@@ -35,6 +35,16 @@ Rectangle {
         anchors.fill: parent
         model: contactModel
         delegate: boardDelegate
+	section.property: "category"
+	section.criteria: ViewSection.FullString
+	section.delegate: ListItem.Header {
+            width: parent.width; height: units.gu(3)
+	    Text {
+		text: '<b>' + section + '</b>'
+		font.family: webFont.name
+		font.pixelSize: FontUtils.sizeToPixels('medium')
+	    }
+	}
     }
 
     function getListByURL(url) {
@@ -42,11 +52,16 @@ Rectangle {
         req.onreadystatechange = function() {
             contactModel.clear()
             if (req.readyState == XMLHttpRequest.DONE) {
+                var boardCategory = '';
 		req.responseText.split("\n").forEach(
 		    function(line) {
 			if (line.match(/(http:\/\/.+\.2ch\.net\/.+)\/>(.+)<\//)) {
 			    contactModel.append({url: RegExp.$1,
-						 name: RegExp.$2})
+						 name: RegExp.$2,
+						 category: boardCategory});
+			    threadLabel = RegExp.$2;
+			} else if (line.match(/<BR><BR><B>(.+)<\/B><BR>/)) {
+			    boardCategory = RegExp.$1
 			}
 		    });
             }

@@ -11,16 +11,19 @@ Rectangle {
     Component {
 	id: contentsDelegate
     ListItem.Standard {
-            width: parent.width; height: units.gu(3) * (lines + 1)
-
+            width: parent.width
+	    height: FontUtils.sizeToPixels('medium') * (lines + 2)
             Column {
-		Text { text: '<b>' + name + '</b>:' + date
-		       font.family: webFont.name
-		       font.pointSize: units.gu(1)
-		     }
-		Text { text: text
-		       font.family: webFont.name
-		       font.pointSize: units.gu(3)}
+		Text {
+		    text: '<b>' + name + '</b>:' + date
+		    font.family: webFont.name
+		    font.pixelSize: FontUtils.sizeToPixels('medium')
+		}
+		Text {
+		    text: contentsText
+		    font.family: webFont.name
+		    font.pixelSize: FontUtils.sizeToPixels('medium')
+		}
             }
             MouseArea {
 		anchors.fill: parent
@@ -46,13 +49,17 @@ Rectangle {
             if (doc.readyState == XMLHttpRequest.DONE) {
 		doc.responseText.split("\n").forEach(
 		    function(line) {
-                        console.log(line)
-			if (line.match(/^(.*)<>(.*)<>(.*)<>(.*)/)) {
-			    contentsModel.append({name: RegExp.$1,
-						  mail: RegExp.$2,
-						  date: RegExp.$3,
-                          text: RegExp.$4,
-                          lines: line.split('<br>').length});
+			if (line.match(/^(.*)<>(.*)<>(.*)<>(.*)<>(.*)/)) {
+			    contentsModel.append(
+				{name: RegExp.$1,
+				 mail: RegExp.$2,
+				 date: RegExp.$3,
+				 contentsText: RegExp.$4,
+				 lines: line.split('<br>').length});
+			    if (RegExp.$5 != '') {
+				console.log("set thread title =" + RegExp.$5);
+				contentsLabel.text = RegExp.$5;
+			    }
 			}
 		    });
             }
