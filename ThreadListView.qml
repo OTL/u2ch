@@ -44,10 +44,11 @@ Rectangle {
 		threadModel.clear()
 		doc.responseText.split("\n").forEach(
 		    function(line) {
-			if (line.match(/(.+)<>(.+)/)) {
+			var threadMatch = line.match(/(.+)<>(.+)/);
+			if (threadMatch) {
 			    threadModel.append({url: url,
-						dat: RegExp.$1,
-						name: RegExp.$2})
+						dat: threadMatch[1],
+						name: threadMatch[2]})
 			}
 		    });
 	    }

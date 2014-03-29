@@ -9,30 +9,31 @@ import "components"
 MainView {
     // objectName for functional testing purposes (autopilot-qt5)
     objectName: "mainView"
-
+        
     // Note! applicationName needs to match the "name" field of the click manifest
     applicationName: "com.ubuntu.developer.otl.u2ch"
-
+    
     /*
-     This property enables the application to change orientation
-     when the device is rotated. The default is false.
-    */
+      This property enables the application to change orientation
+      when the device is rotated. The default is false.
+      */
     //automaticOrientation: true
-
+    
     width: units.gu(100)
     height: units.gu(75)
-
-    FontLoader { id: webFont
-		 source: "https://dl.dropboxusercontent.com/u/1658499/FLOPDesignFont.ttf" 
-	       }
-
+    
+    FontLoader {
+	id: webFont
+	source: "https://dl.dropboxusercontent.com/u/1658499/FLOPDesignFont.ttf" 
+    }
+    
     PageStack {
         id: rootStack
 	height: units.gu(60)
         Component.onCompleted: {
             push(boardViewPage)
         }
-
+	
         Tabs {
             id: rootTabs
             Tab {
@@ -41,13 +42,13 @@ MainView {
             }
             Tab {
 		id: settingTab
-                title: i18n.tr("Settings")
+                                title: i18n.tr("Settings")
             }
             Component.onCompleted: {
                 boardView.getListByURL("http://menu.2ch.net/bbsmenu.html")
             }
         }
-
+	
 	Page {
             id: threadPage
             title: i18n.tr("thread list")
@@ -90,7 +91,7 @@ MainView {
 		id: boardView
             }
 	}
-
+	
 	Page {
             id: contentsPage
             title: i18n.tr("contents")
@@ -111,32 +112,5 @@ MainView {
 		id: contentsView
 	    }
 	}
-	
-
-	    
-	/*        Column {
-		  spacing: units.gu(1)
-		  BoardListView {
-                  id: boardView
-		  }
-		  
-		  anchors {
-                  margins: units.gu(2)
-                  fill: parent
-		  }
-		  Button {
-                  objectName: "button"
-                  width: parent.width
-		  
-                  text: i18n.tr("Get Boards")
-		  
-                  onClicked: {
-                  boardView.getListByURL("http://menu.2ch.net/bbsmenu.html")
-                  //label.text = i18n.tr("..world!")
-                  }
-		  }
-		  
-		  }
-		  */
     }
 }

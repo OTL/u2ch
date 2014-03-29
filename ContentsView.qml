@@ -49,16 +49,18 @@ Rectangle {
             if (doc.readyState == XMLHttpRequest.DONE) {
 		doc.responseText.split("\n").forEach(
 		    function(line) {
-			if (line.match(/^(.*)<>(.*)<>(.*)<>(.*)<>(.*)/)) {
+			var contentsMatch = line.match(/^(.*)<>(.*)<>(.*)<>(.*)<>(.*)/);
+			if (contentsMatch) {
 			    contentsModel.append(
-				{name: RegExp.$1,
-				 mail: RegExp.$2,
-				 date: RegExp.$3,
-				 contentsText: RegExp.$4,
+				{name: contentsMatch[1],
+				 mail: contentsMatch[2],
+				 date: contentsMatch[3],
+				 contentsText: contentsMatch[4],
 				 lines: line.split('<br>').length});
-			    if (RegExp.$5 != '') {
-				console.log("set thread title =" + RegExp.$5);
-				contentsLabel.text = RegExp.$5;
+			    if (contentsMatch[5] != '') {
+				console.log("set thread title =" + contentsMatch[5]);
+
+				contentsLabel.text = contentsMatch[5];
 			    }
 			}
 		    });

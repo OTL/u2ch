@@ -15,16 +15,16 @@ Rectangle {
 	    progression: true
 
             Column {
-                Text { text: ' ' + name
-		       font.family: webFont.name
-		       font.pixelSize: FontUtils.sizeToPixels('medium')
-		     }
+                Text {
+		    text: ' ' + name
+		    font.family: webFont.name
+		    font.pixelSize: FontUtils.sizeToPixels('medium')
+		}
             }
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
 		    rootStack.push(threadPage)
-		    threadLabel = name
 		    threadListView.getListByURL(url)
                 }
             }
@@ -55,13 +55,20 @@ Rectangle {
                 var boardCategory = '';
 		req.responseText.split("\n").forEach(
 		    function(line) {
-			if (line.match(/(http:\/\/.+\.2ch\.net\/.+)\/>(.+)<\//)) {
-			    contactModel.append({url: RegExp.$1,
-						 name: RegExp.$2,
-						 category: boardCategory});
-			    threadLabel = RegExp.$2;
-			} else if (line.match(/<BR><BR><B>(.+)<\/B><BR>/)) {
-			    boardCategory = RegExp.$1
+			var urlExp = /(http:\/\/.+\.2ch\.net\/.+)\/>(.+)<\/A>/;
+			var categoryExp = /<BR><BR><B>(.+)<\/B><BR>/;
+			var urlMatch = line.match(urlExp);
+			var categoryMatch = line.match(categoryExp);
+			if (urlMatch) {
+			    contactModel.append(
+				{
+				    url: urlMatch[1],
+				    name: urlMatch[2],
+				    category: boardCategory
+				});
+			    console.log(urlMatch[1]);
+			} else if (categoryMatch) {
+			    boardCategory = categoryMatch[1];
 			}
 		    });
             }
