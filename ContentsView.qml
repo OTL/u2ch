@@ -12,7 +12,7 @@ Rectangle {
 	id: contentsDelegate
     ListItem.Standard {
             width: parent.width
-	    height: FontUtils.sizeToPixels('medium') * (lines + 2)
+	    height: FontUtils.sizeToPixels('medium') * (lines + 3)
             Column {
 		Text {
 		    text: '<b>' + name + '</b>:' + date
@@ -49,27 +49,26 @@ Rectangle {
             if (doc.readyState == XMLHttpRequest.DONE) {
 		doc.responseText.split("\n").forEach(
 		    function(line) {
-			var contentsMatch = line.match(/^(.*)<>(.*)<>(.*)<>(.*)<>(.*)/);
+			var contentsMatch = line.match(/<dt>(\d+) .+<b>(.+)<\/b><\/font>(.+)<dd>(.*)/);
 			if (contentsMatch) {
 			    contentsModel.append(
-				{name: contentsMatch[1],
-				 mail: contentsMatch[2],
+				{name: contentsMatch[2],
+				 mail: '',
 				 date: contentsMatch[3],
 				 contentsText: contentsMatch[4],
 				 lines: line.split('<br>').length});
-			    if (contentsMatch[5] != '') {
-				console.log("set thread title =" + contentsMatch[5]);
+			}
 
-				contentsLabel.text = contentsMatch[5];
-			    }
+			var titleMatch = line.match(/<title>(.*)<\/title>/);
+			if (titleMatch) {
+			    console.log("set thread title =" + titleMatch[1])
+			    contentsLabel.text = titleMatch[1];
 			}
 		    });
             }
 	}
 
-	var server_url = 'http://smilerobotics.com:25252/utf/'
-	doc.open("get", server_url + url)
-	doc.setRequestHeader("Content-Encoding", "UTF-8");
+	doc.open("get", url)
 	doc.send();
     }
 

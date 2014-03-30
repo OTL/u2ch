@@ -4,10 +4,11 @@ import Ubuntu.Components.ListItems 0.1  as ListItem
 
 Rectangle {
     width: parent.width
-    
+
     ListModel {
-        id: contactModel
+        id: boardModel
     }
+    
     Component {
         id: boardDelegate
         ListItem.Standard {
@@ -24,8 +25,9 @@ Rectangle {
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-		    rootStack.push(threadPage)
-		    threadListView.getListByURL(url)
+		    rootStack.push(threadPage);
+		    threadListView.getListByURL(url);
+		    threadLabel.text = name;
                 }
             }
         }
@@ -33,7 +35,7 @@ Rectangle {
 
     ListView {
         anchors.fill: parent
-        model: contactModel
+        model: boardModel
         delegate: boardDelegate
 	section.property: "category"
 	section.criteria: ViewSection.FullString
@@ -47,35 +49,14 @@ Rectangle {
 	}
     }
 
-    function getListByURL(url) {
-        var req = new XMLHttpRequest();
-        req.onreadystatechange = function() {
-            contactModel.clear()
-            if (req.readyState == XMLHttpRequest.DONE) {
-                var boardCategory = '';
-		req.responseText.split("\n").forEach(
-		    function(line) {
-			var urlExp = /(http:\/\/.+\.2ch\.net\/.+)\/>(.+)<\/A>/;
-			var categoryExp = /<BR><BR><B>(.+)<\/B><BR>/;
-			var urlMatch = line.match(urlExp);
-			var categoryMatch = line.match(categoryExp);
-			if (urlMatch) {
-			    contactModel.append(
-				{
-				    url: urlMatch[1],
-				    name: urlMatch[2],
-				    category: boardCategory
-				});
-			    console.log(urlMatch[1]);
-			} else if (categoryMatch) {
-			    boardCategory = categoryMatch[1];
-			}
-		    });
-            }
-        }
-
-	req.open("get", url);
-	req.setRequestHeader("Content-Encoding", "UTF-8");
-	req.send();
+    function setBoardList(boards) {
+	boardModel.clear();
+	for (var i = 0; i < boards.count; ++i) {
+	    boardModel.append(
+		{
+		    url: boards.get(i).url,
+		    name: boards.get(i).name,
+		});
+	}
     }
 }

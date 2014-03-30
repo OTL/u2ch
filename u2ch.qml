@@ -31,21 +31,21 @@ MainView {
         id: rootStack
 	height: units.gu(60)
         Component.onCompleted: {
-            push(boardViewPage)
+            push(categoryPage)
         }
 	
         Tabs {
             id: rootTabs
             Tab {
                 title: i18n.tr("u2ch")
-                page: boardViewPage
+                page: boardPage
             }
             Tab {
 		id: settingTab
-                                title: i18n.tr("Settings")
+                title: i18n.tr("Settings")
             }
             Component.onCompleted: {
-                boardView.getListByURL("http://menu.2ch.net/bbsmenu.html")
+                categoryView.getListByURL("http://menu.2ch.net/bbsmenu.html")
             }
         }
 	
@@ -71,14 +71,38 @@ MainView {
 	}
 	
 	Page {
-            id: boardViewPage
+            id: categoryPage
             title: i18n.tr("Ubuntu 2ch Viewer")
+	    Rectangle {
+		id: categoryLabelRect
+		color: UbuntuColors.lightAubergine
+		width: parent.width
+		height: units.gu(5)
+		Label {
+		    id: categoryLabel
+		    anchors.centerIn: parent
+		    text: "Category Lists"
+		    fontSize: "large"
+		}
+	    }
+            CategoryListView {
+		height: units.gu(55)
+		//anchors.centerIn: parent
+		anchors.top: categoryLabelRect.bottom
+		id: categoryView
+            }
+	}
+
+	Page {
+            id: boardPage
+            title: i18n.tr("board list")
 	    Rectangle {
 		id: boardLabelRect
 		color: UbuntuColors.lightAubergine
 		width: parent.width
 		height: units.gu(5)
 		Label {
+		    id: boardLabel
 		    anchors.centerIn: parent
 		    text: "Board Lists"
 		    fontSize: "large"
@@ -96,6 +120,7 @@ MainView {
             id: contentsPage
             title: i18n.tr("contents")
 	    Rectangle {
+		id: contentsLabelRectangle
 		color: UbuntuColors.lightAubergine
 		width: parent.width
 		height: units.gu(5)
@@ -108,7 +133,8 @@ MainView {
 	    }
 	    ContentsView {
 		height: units.gu(55)
-		anchors.centerIn: parent
+		//anchors.centerIn: parent
+		anchors.top: contentsLabelRectangle.bottom
 		id: contentsView
 	    }
 	}

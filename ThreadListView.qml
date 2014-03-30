@@ -24,8 +24,8 @@ Rectangle {
 		anchors.fill: parent
 		onClicked: {
 		    rootStack.push(contentsPage)
-		    contentsLabel = name
-		    contentsView.getListByURL(url + '/dat/' + dat)
+		    var urlMatch = url.match(/(.+\.2ch\.net)\/(.+)/);
+		    contentsView.getListByURL(urlMatch[1] + '/test/read.cgi/' + urlMatch[2] + '/' + dat)
 		}
             }
 	}
@@ -44,7 +44,7 @@ Rectangle {
 		threadModel.clear()
 		doc.responseText.split("\n").forEach(
 		    function(line) {
-			var threadMatch = line.match(/(.+)<>(.+)/);
+			var threadMatch = line.match(/<a href=\"(\d+)\/l50\">\d+: (.+)<\/a>/);
 			if (threadMatch) {
 			    threadModel.append({url: url,
 						dat: threadMatch[1],
@@ -53,10 +53,7 @@ Rectangle {
 		    });
 	    }
 	}
-	var server_url = 'http://smilerobotics.com:25252/utf/'
-	doc.open("get", server_url + url + '/subject.txt')
-	console.log(server_url + url + '/subject.txt')
-	doc.setRequestHeader("Content-Encoding", "UTF-8");
+	doc.open("get", url + '/subback.html')
 	doc.send()
     }
 
