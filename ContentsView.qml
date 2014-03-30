@@ -5,71 +5,73 @@ Rectangle {
     width: parent.width
 
     ListModel {
-	id: contentsModel
+        id: contentsModel
     }
 
     Component {
-	id: contentsDelegate
-    ListItem.Standard {
+        id: contentsDelegate
+        ListItem.Standard {
             width: parent.width
-	    height: FontUtils.sizeToPixels('medium') * (lines + 3)
+            height: (FontUtils.sizeToPixels('medium') + 2) * (lines + 2)
             Column {
-		Text {
-		    text: '<b>' + name + '</b>:' + date
-		    font.family: webFont.name
-		    font.pixelSize: FontUtils.sizeToPixels('medium')
-		}
-		Text {
-		    text: contentsText
-		    font.family: webFont.name
-		    font.pixelSize: FontUtils.sizeToPixels('medium')
-		}
+                Text {
+                    text: number + ': <b>' + name + '</b>' + date
+                    font.family: webFont.name
+                    font.pixelSize: FontUtils.sizeToPixels('medium')
+                }
+                Text {
+                    text: contentsText
+                    font.family: webFont.name
+                    font.pixelSize: FontUtils.sizeToPixels('medium')
+                }
             }
-            MouseArea {
-		anchors.fill: parent
-		onClicked: {
-                    console.log(name)
-		}
-            }
-	}
+//            MouseArea {
+//                anchors.fill: parent
+//                onClicked: {
+//                    console.log(name)
+//                }
+//            }
+        }
     }
 
     ListView {
-	anchors.fill: parent
-	model: contentsModel
-	delegate: contentsDelegate
-	//highlight: Rectangle { color: "lightsteelblue"; radius: 5 }
-	//focus: true
+        clip: true
+        anchors.fill: parent
+        model: contentsModel
+        delegate: contentsDelegate
+        //highlight: Rectangle { color: "lightsteelblue"; radius: 5 }
+        //focus: true
     }
 
     function getListByURL(url) {
-	var doc = new XMLHttpRequest();
-	doc.onreadystatechange = function() {
+        var doc = new XMLHttpRequest();
+        doc.onreadystatechange = function() {
             contentsModel.clear()
             if (doc.readyState == XMLHttpRequest.DONE) {
-		doc.responseText.split("\n").forEach(
-		    function(line) {
-			var contentsMatch = line.match(/<dt>(\d+) .+<b>(.+)<\/b><\/font>(.+)<dd>(.*)/);
-			if (contentsMatch) {
-			    contentsModel.append(
-				{name: contentsMatch[2],
-				 mail: '',
-				 date: contentsMatch[3],
-				 contentsText: contentsMatch[4],
-				 lines: line.split('<br>').length});
-			}
+                doc.responseText.split("\n").forEach(
+                    function(line) {
+                        var contentsMatch = line.match(/<dt>(\d+) .+<b>(.+)<\/b><\/font>(.+)<dd>(.*)/);
+                        if (contentsMatch) {
+                            contentsModel.append(
+                                {number: contentsMatch[1],
+                                 name: contentsMatch[2],
+                                 mail: '',
+                                 date: contentsMatch[3],
+                                 contentsText: contentsMatch[4],
+                                 lines: line.split('<br>').length});
+                        }
 
-			var titleMatch = line.match(/<title>(.*)<\/title>/);
-			if (titleMatch) {
-			    console.log("set thread title =" + titleMatch[1])
-			    contentsLabel.text = titleMatch[1];
-			}
-		    });
+                        var titleMatch = line.match(/<title>(.*)<\/title>/);
+                        if (titleMatch) {
+                            console.log("set thread title =" + titleMatch[1])
+                            contentsLabel.text = titleMatch[1];
+                        }
+                    });
             }
-	}
+        }
 
-	doc.open("get", url)
-	doc.send();
+        doc.open("get", url)
+        doc.send();
     }
 
 }

@@ -13,50 +13,51 @@ Rectangle {
         id: boardDelegate
         ListItem.Standard {
             width: parent.width; height: units.gu(3)
-	    progression: true
+            progression: true
 
             Column {
                 Text {
-		    text: ' ' + name
-		    font.family: webFont.name
-		    font.pixelSize: FontUtils.sizeToPixels('medium')
-		}
+                    text: name
+                    font.family: webFont.name
+                    font.pixelSize: FontUtils.sizeToPixels('medium')
+                }
             }
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-		    rootStack.push(threadPage);
-		    threadListView.getListByURL(url);
-		    threadLabel.text = name;
+                    rootStack.push(threadPage);
+                    threadListView.getListByURL(url);
+                    threadLabel.text = name;
                 }
             }
         }
     }
 
     ListView {
+        clip: true
         anchors.fill: parent
         model: boardModel
         delegate: boardDelegate
-	section.property: "category"
-	section.criteria: ViewSection.FullString
-	section.delegate: ListItem.Header {
+        section.property: "category"
+        section.criteria: ViewSection.FullString
+        section.delegate: ListItem.Header {
             width: parent.width; height: units.gu(3)
-	    Text {
-		text: '<b>' + section + '</b>'
-		font.family: webFont.name
-		font.pixelSize: FontUtils.sizeToPixels('medium')
-	    }
-	}
+            Text {
+                text: '<b>' + section + '</b>'
+                font.family: webFont.name
+                font.pixelSize: FontUtils.sizeToPixels('medium')
+            }
+        }
     }
 
     function setBoardList(boards) {
-	boardModel.clear();
-	for (var i = 0; i < boards.count; ++i) {
-	    boardModel.append(
-		{
-		    url: boards.get(i).url,
-		    name: boards.get(i).name,
-		});
-	}
+        boardModel.clear();
+        for (var i = 0; i < boards.count; ++i) {
+            boardModel.append(
+                {
+                    url: boards.get(i).url,
+                    name: boards.get(i).name,
+                });
+        }
     }
 }
