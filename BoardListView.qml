@@ -12,7 +12,8 @@ Rectangle {
     Component {
         id: boardDelegate
         ListItem.Standard {
-            width: parent.width; height: units.gu(3)
+            width: parent.width
+            height: units.gu(3)
             progression: true
 
             Column {

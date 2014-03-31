@@ -65,7 +65,7 @@ MainView {
                 }
             }
             CategoryListView {
-                anchors.fill: parent
+                anchors.bottom: parent.bottom
                 anchors.top: categoryLabelRect.bottom
                 id: categoryView
             }
@@ -87,7 +87,7 @@ MainView {
                 }
             }
             BoardListView {
-                anchors.fill: parent
+                anchors.bottom: parent.bottom
                 anchors.top: boardLabelRect.bottom
                 id: boardView
             }
@@ -97,6 +97,7 @@ MainView {
             id: threadPage
             title: i18n.tr("Thread List")
             Rectangle {
+                id: threadLabelRect
                 color: UbuntuColors.lightAubergine
                 width: parent.width
                 height: units.gu(5)
@@ -108,8 +109,8 @@ MainView {
                 }
             }
             ThreadListView {
-                anchors.fill: parent
-                anchors.centerIn: parent
+                anchors.bottom: parent.bottom
+                anchors.top: threadLabelRect.bottom
                 id: threadListView
             }
         }
@@ -131,7 +132,7 @@ MainView {
                 }
             }
             ContentsView {
-                anchors.fill: parent
+                anchors.bottom: parent.bottom
                 anchors.top: contentsLabelRectangle.bottom
                 id: contentsView
             }

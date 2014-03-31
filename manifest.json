@@ -1,15 +1,15 @@
 {
     "architecture": "all",
     "description": "2ch (Japanese textboard) viewer for Ubuntu Touch",
-    "framework": "ubuntu-sdk-14.04-qml-dev1",
+    "framework": "ubuntu-sdk-13.10",
     "hooks": {
         "u2ch": {
             "apparmor": "u2ch.json",
             "desktop": "u2ch.desktop"
         }
     },
-    "maintainer": "Takashi Ogura",
+    "maintainer": "Takashi Ogura <t.ogura@gmail.com>",
     "name": "com.ubuntu.developer.o.u2ch",
     "title": "u2ch",
-    "version": "0.2.1"
+    "version": "0.2.3"
 }
