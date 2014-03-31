@@ -1,11 +1,11 @@
 import QtQuick 2.0
 import Ubuntu.Components 0.1
 import "components"
+import "scripts.js" as U2chjs
 
 /*!
   \brief MainView with a Label and Button elements.
   */
-
 MainView {
     // objectName for functional testing purposes (autopilot-qt5)
     objectName: "mainView"
@@ -17,11 +17,12 @@ MainView {
       This property enables the application to change orientation
       when the device is rotated. The default is false.
       */
-    //automaticOrientation: true
+    automaticOrientation: true
     
     width: units.gu(100)
     height: units.gu(75)
-    
+
+
     FontLoader {
         id: webFont
         source: "https://dl.dropboxusercontent.com/u/1658499/FLOPDesignFont.ttf" 
@@ -49,6 +50,8 @@ MainView {
             }
         }
         
+
+
         Page {
             id: categoryPage
             title: i18n.tr("Categories")
@@ -60,8 +63,21 @@ MainView {
                 Label {
                     id: categoryLabel
                     anchors.centerIn: parent
-                    text: "Category Lists"
-                    fontSize: "large"
+                   text: "Category Lists"
+                   fontSize: "large"
+                }
+                Label {
+                    id: fontLoadingLable
+                    anchors.right: parent.right
+                    anchors.top: categoryLabel.top
+                    text: {
+                        U2chjs.checkFontAndAddLoading(webFont, "", "loading fonts", categoryActivity);
+                    }
+                }
+                ActivityIndicator {
+                    anchors.right: fontLoadingLable.left
+                    anchors.top: categoryLabel.top
+                    id: categoryActivity
                 }
             }
             CategoryListView {
