@@ -27,8 +27,10 @@ Rectangle {
                 anchors.fill: parent
                 onClicked: {
                     rootStack.push(threadPage);
-                    threadListView.getListByURL(url);
                     threadLabel.text = name;
+                    threadListView.getListByURL(url);
+                    threadListView.currentBoardName = name
+                    threadListView.currentBoardUrl = url
                 }
             }
         }

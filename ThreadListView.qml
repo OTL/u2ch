@@ -3,7 +3,8 @@ import Ubuntu.Components.ListItems 0.1  as ListItem
 
 Rectangle {
     width: parent.width
-
+    property string currentBoardUrl
+    property string currentBoardName
     ListModel {
         id: threadModel
     }
@@ -38,6 +39,8 @@ Rectangle {
         model: threadModel
         delegate: threadDelegate
     }
+
+
 
     function getListByURL(url) {
         var doc = new XMLHttpRequest();

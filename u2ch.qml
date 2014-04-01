@@ -1,6 +1,9 @@
 import QtQuick 2.0
 import Ubuntu.Components 0.1
+
 import "components"
+
+import QtQuick.LocalStorage 2.0
 import "scripts.js" as U2chjs
 
 /*!
@@ -28,30 +31,43 @@ MainView {
         source: "https://dl.dropboxusercontent.com/u/1658499/FLOPDesignFont.ttf" 
     }
     
+    Tabs {
+        id: rootTabs
+        Tab {
+            title: i18n.tr("View 2ch")
+            page: rootStack
+        }
+        Tab {
+            id: favoriteTab
+            title: i18n.tr("Favorites")
+            page: favoritePage
+            Component.onCompleted: {
+                favoriteView.setBoardList(U2chjs.getFavoriteBoardList());
+            }
+        }
+    }
+    
+    Page {
+        id: favoritePage
+        title: i18n.tr("Favorites")
+        FavoriteListView {
+            id: favoriteView
+            anchors.bottom: parent.bottom
+            anchors.top: parent.top
+            width: parent.width
+            height: units.gu(300)
+        }
+    }
+
+
     PageStack {
         id: rootStack
         height: units.gu(60)
         Component.onCompleted: {
             push(categoryPage)
+            categoryView.getListByURL("http://menu.2ch.net/bbsmenu.html")
         }
         
-        Tabs {
-            id: rootTabs
-            Tab {
-                title: i18n.tr("u2ch")
-                page: boardPage
-            }
-//            Tab {
-//                id: settingTab
-//                title: i18n.tr("Settings")
-//            }
-            Component.onCompleted: {
-                categoryView.getListByURL("http://menu.2ch.net/bbsmenu.html")
-            }
-        }
-        
-
-
         Page {
             id: categoryPage
             title: i18n.tr("Categories")
@@ -128,6 +144,17 @@ MainView {
                 anchors.bottom: parent.bottom
                 anchors.top: threadLabelRect.bottom
                 id: threadListView
+            }
+            tools: ToolbarItems {
+                Button {
+                    anchors.verticalCenter: parent.verticalCenter
+                    text: i18n.tr("Add This Board to favorite")
+                    onClicked: {
+                        U2chjs.addBoardToFavorite(threadListView.currentBoardName, threadListView.currentBoardUrl);
+                        favoriteView.setBoardList(U2chjs.getFavoriteBoardList());
+                        rootTabs.selectedTabIndex = 1
+                    }
+                }
             }
         }
         

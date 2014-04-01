@@ -15,14 +15,20 @@ Rectangle {
             height: (FontUtils.sizeToPixels('medium') + 2) * (lines + 2)
             Column {
                 Text {
+                    id: nameText
+                    width: parent.width
                     text: number + ': <b>' + name + '</b>' + date
                     font.family: webFont.name
                     font.pixelSize: FontUtils.sizeToPixels('medium')
+                    wrapMode: Text.WrapAnywhere
                 }
                 Text {
+                    anchors.top: nameText.bottom
+                    width: parent.width
                     text: contentsText
                     font.family: webFont.name
                     font.pixelSize: FontUtils.sizeToPixels('medium')
+                    wrapMode: Text.WrapAnywhere
                 }
             }
 //            MouseArea {
