@@ -48,6 +48,7 @@ Rectangle {
 
     function getListByURL(url) {
         var req = new XMLHttpRequest();
+        categoryActivity.running = true
         req.onreadystatechange = function() {
             categoryModel.clear()
             if (req.readyState == XMLHttpRequest.DONE) {
@@ -87,6 +88,7 @@ Rectangle {
                             boards = [];
                         }
                     });
+                categoryActivity.running = false
             }
         }
         

@@ -55,6 +55,7 @@ Rectangle {
                        contentsView.currentThreadName = title
                        contentsView.currentThreadUrl = url
                        rootTabs.selectedTabIndex = 0
+
                    }
                }
            }
@@ -80,13 +81,11 @@ Rectangle {
         favoriteBoardModel.clear();
         var boards = U2chjs.getFavoriteBoardList('Board');
         boards.forEach(function(board) {
-                           console.log("add " + board.title);
                            board.type = 'Board'
                            favoriteBoardModel.append(board);
                            });
         var threads = U2chjs.getFavoriteBoardList('Thread');
         threads.forEach(function(thread) {
-                           console.log("add " + thread.title);
                            thread.type = 'Thread'
                            favoriteBoardModel.append(thread);
                            });

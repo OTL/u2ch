@@ -6,14 +6,11 @@ import "components"
 import QtQuick.LocalStorage 2.0
 import "scripts.js" as U2chjs
 
-/*!
-  \brief MainView with a Label and Button elements.
-  */
 MainView {
     // objectName for functional testing purposes (autopilot-qt5)
     objectName: "mainView"
     
-    // Note! applicationName needs to match the "name" field of the click manifest
+    // applicationName needs to match the "name" field of the click manifest
     applicationName: "com.ubuntu.developer.o.u2ch"
     
     /*
@@ -29,6 +26,20 @@ MainView {
     FontLoader {
         id: webFont
         source: "https://dl.dropboxusercontent.com/u/1658499/FLOPDesignFont.ttf" 
+    }
+    Label {
+        id: fontLoadingLable
+        anchors.right: parent.right
+        anchors.top: parent.top
+        text: {
+            U2chjs.checkFontAndAddLoading(
+                webFont, "", "loading fonts", fontLoadingActivity);
+        }
+    }
+    ActivityIndicator {
+        anchors.right: fontLoadingLable.left
+        anchors.verticalCenter: fontLoadingLable.verticalCenter
+        id: fontLoadingActivity
     }
     
     Tabs {
@@ -81,20 +92,12 @@ MainView {
                 Label {
                     id: categoryLabel
                     anchors.centerIn: parent
-                   text: "Category Lists"
-                   fontSize: "large"
-                }
-                Label {
-                    id: fontLoadingLable
-                    anchors.right: parent.right
-                    anchors.top: categoryLabel.top
-                    text: {
-                        U2chjs.checkFontAndAddLoading(webFont, "", "loading fonts", categoryActivity);
-                    }
+                    text: "Category Lists"
+                    fontSize: "large"
                 }
                 ActivityIndicator {
-                    anchors.right: fontLoadingLable.left
-                    anchors.top: categoryLabel.top
+                    anchors.right: parent.right
+                    anchors.verticalCenter: parent.verticalCenter
                     id: categoryActivity
                 }
             }
@@ -153,6 +156,7 @@ MainView {
                 id: threadListView
             }
             tools: ToolbarItems {
+                id: threadToolbar
                 Button {
                     anchors.verticalCenter: parent.verticalCenter
                     text: i18n.tr("Add to favorite")
@@ -183,11 +187,12 @@ MainView {
                 }
                 ActivityIndicator {
                     anchors.right: parent.right
-                    anchors.horizontalCenter: parent.center
+                    anchors.verticalCenter: parent.verticalCenter
                     id: contentsActivity
                 }
             }
             tools: ToolbarItems {
+                id: contentsToolbar
                 Button {
                     anchors.verticalCenter: parent.verticalCenter
                     text: i18n.tr("Add to favorite")
