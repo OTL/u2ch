@@ -56,14 +56,23 @@ Rectangle {
                 req.responseText.split("\n").forEach(
                     function(line) {
                         var urlExp = /(http:\/\/.+\.2ch\.net\/.+)\/>(.+)<\/A>/;
+                        var machiExp = /(http:\/\/.+\.machi\.to\/.+)\/.*>(.+)<\/A>/;
                         var categoryExp = /<BR><BR><B>(.+)<\/B><BR>/;
                         var urlMatch = line.match(urlExp);
+                        var machiMatch = line.match(machiExp);
                         var categoryMatch = line.match(categoryExp);
                         if (urlMatch) {
                             boards.push(
                                 {
                                     url: urlMatch[1],
                                     name: urlMatch[2],
+                                    category: categoryName
+                                });
+                        } else if (machiMatch) {
+                            boards.push(
+                                {
+                                    url: machiMatch[1],
+                                    name: machiMatch[2],
                                     category: categoryName
                                 });
                         } else if (categoryMatch) {
