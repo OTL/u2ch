@@ -25,9 +25,11 @@ Rectangle {
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    rootStack.push(contentsPage)
-                    var urlMatch = url.match(/(.+\.2ch\.net)\/(.+)/);
-                    contentsView.getListByURL(urlMatch[1] + '/test/read.cgi/' + urlMatch[2] + '/' + dat)
+                    rootStack.push(contentsPage);
+                    contentsView.currentThreadName = name;
+                    contentsView.currentThreadUrl = url;
+                    contentsLabel.text = name;
+                    contentsView.getListByURL(url);
                 }
             }
         }
@@ -52,7 +54,11 @@ Rectangle {
                     function(line) {
                         var threadMatch = line.match(/<a href=\"(\d+)\/l50\">\d+: (.+)<\/a>/);
                         if (threadMatch) {
-                            threadModel.append({url: url,
+                            var urlMatch = url.match(/(.+\.2ch\.net)\/(.+)/);
+                            var wholeUrl = urlMatch[1] + '/test/read.cgi/' + urlMatch[2] + '/' + threadMatch[1];
+
+                            threadModel.append({url: wholeUrl,
+                                                originalUrl: url,
                                                 dat: threadMatch[1],
                                                 name: threadMatch[2]})
                         }

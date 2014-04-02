@@ -42,7 +42,9 @@ MainView {
             title: i18n.tr("Favorites")
             page: favoritePage
             Component.onCompleted: {
-                favoriteView.setBoardList(U2chjs.getFavoriteBoardList());
+                //U2chjs.clearBoardList('Board');
+                //U2chjs.clearBoardList('Thread');
+                favoriteView.setBoardListFromDB();
             }
         }
     }
@@ -153,11 +155,11 @@ MainView {
             tools: ToolbarItems {
                 Button {
                     anchors.verticalCenter: parent.verticalCenter
-                    text: i18n.tr("Add This Board to favorite")
+                    text: i18n.tr("Add to favorite")
                     onClicked: {
-                        U2chjs.addBoardToFavorite(threadListView.currentBoardName, threadListView.currentBoardUrl);
-                        //avoriteView.setBoardList(U2chjs.getFavoriteBoardList());
-                        favoriteView.addBoardByTitleAndURL(threadListView.currentBoardName, threadListView.currentBoardUrl);
+                        var name = threadListView.currentBoardName;
+                        var url = threadListView.currentBoardUrl;
+                        favoriteView.addBoardByTitleAndURL(name, url, 'Board');
                         rootTabs.selectedTabIndex = 1
                     }
                 }
@@ -183,6 +185,18 @@ MainView {
                     anchors.right: parent.right
                     anchors.horizontalCenter: parent.center
                     id: contentsActivity
+                }
+            }
+            tools: ToolbarItems {
+                Button {
+                    anchors.verticalCenter: parent.verticalCenter
+                    text: i18n.tr("Add to favorite")
+                    onClicked: {
+                        var name = contentsView.currentThreadName;
+                        var url = contentsView.currentThreadUrl;
+                        favoriteView.addBoardByTitleAndURL(name, url, 'Thread');
+                        rootTabs.selectedTabIndex = 1
+                    }
                 }
             }
             ContentsView {

@@ -25,7 +25,7 @@ Rectangle {
             }
             
             onItemRemoved: {
-                U2chjs.removeBoardFromFavorite(title, url);
+                U2chjs.removeBoardFromFavorite(title, url, type);
             }
             Column {
                 Text {
@@ -41,12 +41,21 @@ Rectangle {
                width: parent.width / 2
                height: parent.height
                onClicked: {
-                   rootStack.push(threadPage);
-                   threadListView.getListByURL(url);
-                   threadLabel.text = title;
-                   threadListView.currentBoardName = title
-                   threadListView.currentBoardUrl = url
-                   rootTabs.selectedTabIndex = 0
+                   if (type == 'Board') {
+                       rootStack.push(threadPage);
+                       threadListView.getListByURL(url);
+                       threadLabel.text = title;
+                       threadListView.currentBoardName = title
+                       threadListView.currentBoardUrl = url
+                       rootTabs.selectedTabIndex = 0
+                   } else if (type == 'Thread') {
+                       rootStack.push(contentsPage);
+                       contentsView.getListByURL(url);
+                       contentsLabel.text = title;
+                       contentsView.currentThreadName = title
+                       contentsView.currentThreadUrl = url
+                       rootTabs.selectedTabIndex = 0
+                   }
                }
            }
         }
@@ -59,15 +68,27 @@ Rectangle {
         delegate: favoriteBoardDelegate
     }
 
-    function addBoardByTitleAndURL(title, url) {
-        favoriteBoardModel.append({title: title, url: url});
+    function addBoardByTitleAndURL(title, url, type) {
+        if (!type) {
+            type = 'Board';
+        }
+        U2chjs.addBoardToFavorite(title, url, type);
+        favoriteBoardModel.append({title: title, url: url, type: type});
     }
 
-    function setBoardList(boards) {
+    function setBoardListFromDB() {
         favoriteBoardModel.clear();
+        var boards = U2chjs.getFavoriteBoardList('Board');
         boards.forEach(function(board) {
                            console.log("add " + board.title);
+                           board.type = 'Board'
                            favoriteBoardModel.append(board);
+                           });
+        var threads = U2chjs.getFavoriteBoardList('Thread');
+        threads.forEach(function(thread) {
+                           console.log("add " + thread.title);
+                           thread.type = 'Thread'
+                           favoriteBoardModel.append(thread);
                            });
     }
 }

@@ -3,6 +3,8 @@ import Ubuntu.Components.ListItems 0.1  as ListItem
 
 Rectangle {
     width: parent.width
+    property string currentThreadUrl
+    property string currentThreadName
 
     ListModel {
         id: contentsModel
@@ -71,7 +73,6 @@ Rectangle {
 
                         var titleMatch = line.match(/<title>(.*)<\/title>/);
                         if (titleMatch) {
-                            console.log("set thread title =" + titleMatch[1])
                             contentsLabel.text = titleMatch[1];
                         }
                     });

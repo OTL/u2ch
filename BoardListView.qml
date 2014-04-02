@@ -28,9 +28,9 @@ Rectangle {
                 onClicked: {
                     rootStack.push(threadPage);
                     threadLabel.text = name;
-                    threadListView.getListByURL(url);
                     threadListView.currentBoardName = name
                     threadListView.currentBoardUrl = url
+                    threadListView.getListByURL(url);
                 }
             }
         }
