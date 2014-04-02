@@ -50,9 +50,11 @@ Rectangle {
     }
 
     function getListByURL(url) {
+        contentsActivity.running = true;
         var doc = new XMLHttpRequest();
+        contentsModel.clear();
         doc.onreadystatechange = function() {
-            contentsModel.clear()
+
             if (doc.readyState == XMLHttpRequest.DONE) {
                 doc.responseText.split("\n").forEach(
                     function(line) {
@@ -73,6 +75,7 @@ Rectangle {
                             contentsLabel.text = titleMatch[1];
                         }
                     });
+                contentsActivity.running = false;
             }
         }
 

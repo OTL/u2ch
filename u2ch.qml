@@ -139,6 +139,11 @@ MainView {
                     text: "Thread Lists"
                     fontSize: "large"
                 }
+                ActivityIndicator {
+                    anchors.right: parent.right
+                    anchors.horizontalCenter: parent.center
+                    id: threadActivity
+                }
             }
             ThreadListView {
                 anchors.bottom: parent.bottom
@@ -151,7 +156,8 @@ MainView {
                     text: i18n.tr("Add This Board to favorite")
                     onClicked: {
                         U2chjs.addBoardToFavorite(threadListView.currentBoardName, threadListView.currentBoardUrl);
-                        favoriteView.setBoardList(U2chjs.getFavoriteBoardList());
+                        //avoriteView.setBoardList(U2chjs.getFavoriteBoardList());
+                        favoriteView.addBoardByTitleAndURL(threadListView.currentBoardName, threadListView.currentBoardUrl);
                         rootTabs.selectedTabIndex = 1
                     }
                 }
@@ -172,6 +178,11 @@ MainView {
                     anchors.centerIn: parent
                     text: "Contents"
                     fontSize: "large"
+                }
+                ActivityIndicator {
+                    anchors.right: parent.right
+                    anchors.horizontalCenter: parent.center
+                    id: contentsActivity
                 }
             }
             ContentsView {

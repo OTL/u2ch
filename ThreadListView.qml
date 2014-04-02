@@ -43,10 +43,11 @@ Rectangle {
 
 
     function getListByURL(url) {
+        threadActivity.running = true;
         var doc = new XMLHttpRequest();
+        threadModel.clear()
         doc.onreadystatechange = function() {
             if (doc.readyState == XMLHttpRequest.DONE) {
-                threadModel.clear()
                 doc.responseText.split("\n").forEach(
                     function(line) {
                         var threadMatch = line.match(/<a href=\"(\d+)\/l50\">\d+: (.+)<\/a>/);
@@ -56,6 +57,7 @@ Rectangle {
                                                 name: threadMatch[2]})
                         }
                     });
+                threadActivity.running = false
             }
         }
         doc.open("get", url + '/subback.html')

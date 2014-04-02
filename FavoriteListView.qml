@@ -59,6 +59,10 @@ Rectangle {
         delegate: favoriteBoardDelegate
     }
 
+    function addBoardByTitleAndURL(title, url) {
+        favoriteBoardModel.append({title: title, url: url});
+    }
+
     function setBoardList(boards) {
         favoriteBoardModel.clear();
         boards.forEach(function(board) {
