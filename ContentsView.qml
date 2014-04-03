@@ -42,7 +42,23 @@ Rectangle {
         }
     }
 
+    function positionViewAtBeginning() {
+        contentsViewListView.positionViewAtBeginning();
+    }
+    
+    function positionViewAtEnd() {
+        contentsViewListView.positionViewAtEnd();
+    }
+
+    function positionViewAtIndex(x) {
+        contentsViewListView.positionViewAtIndex(x, ListView.Beginning);
+    }
+
+    function getCount() {
+        return contentsViewListView.count;
+    }
     ListView {
+        id: contentsViewListView
         clip: true
         anchors.fill: parent
         model: contentsModel

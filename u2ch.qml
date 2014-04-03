@@ -157,6 +157,7 @@ MainView {
             }
             tools: ToolbarItems {
                 id: threadToolbar
+                opened: true
                 Button {
                     anchors.verticalCenter: parent.verticalCenter
                     text: i18n.tr("Add to favorite")
@@ -195,7 +196,38 @@ MainView {
                 id: contentsToolbar
                 Button {
                     anchors.verticalCenter: parent.verticalCenter
-                    text: i18n.tr("Add to favorite")
+                    text: i18n.tr("^")
+                    color: UbuntuColors.warmGrey
+                    onClicked: {
+                        contentsView.positionViewAtBeginning();
+                    }
+                    width: units.gu(3)
+                }
+                Slider {
+                    anchors.verticalCenter: parent.verticalCenter
+                    id: contentsSlider
+                    function formatValue(v) {
+                        contentsView.positionViewAtIndex(Math.round(v));
+                        return (v + 1).toFixed(0);
+                    }
+                    maximumValue: {
+                        contentsView.getCount();
+                    }
+                    width: units.gu(10)
+                    live: true
+                }
+                Button {
+                    anchors.verticalCenter: parent.verticalCenter
+                    text: i18n.tr("V")
+                    color: UbuntuColors.warmGrey
+                    onClicked: {
+                        contentsView.positionViewAtEnd();
+                    }
+                    width: units.gu(3)
+                }
+                Button {
+                    anchors.verticalCenter: parent.verticalCenter
+                    text: i18n.tr("favorite")
                     onClicked: {
                         var name = contentsView.currentThreadName;
                         var url = contentsView.currentThreadUrl;
@@ -203,6 +235,7 @@ MainView {
                         rootTabs.selectedTabIndex = 1
                     }
                 }
+                opened: true
             }
             ContentsView {
                 anchors.bottom: parent.bottom

@@ -50,6 +50,7 @@ Rectangle {
                        rootTabs.selectedTabIndex = 0
                    } else if (type == 'Thread') {
                        rootStack.push(contentsPage);
+                       contentsToolbar.opened = true;
                        contentsView.getListByURL(url);
                        contentsLabel.text = title;
                        contentsView.currentThreadName = title
